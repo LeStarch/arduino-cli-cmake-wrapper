@@ -27,7 +27,7 @@
     :alt: isort your imports, so you don't have to
 
 .. |ruff| image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v0.json
-    :target: https://github.com/charliermarsh/ruff
+    :target: https://github.com/astral-sh/ruff
     :alt: An extremely fast Python linter, written in Rust
 
 .. |contributors| image:: https://img.shields.io/github/contributors/SterlingPeet/arduino-cli-cmake-wrapper
@@ -37,7 +37,7 @@
 .. |commit| image:: https://img.shields.io/github/last-commit/SterlingPeet/arduino-cli-cmake-wrapper
 
 .. |license| image:: https://img.shields.io/badge/License-Apache_2.0-blue.svg
-    :target: https://opensource.org/licenses/Apache-2.0
+    :target: https://opensource.org/license/apache-2-0/
     :alt: Apache Software License 2.0
 
 .. |semver| image:: https://img.shields.io/badge/Semantic%20Versioning-2.0.0-brightgreen.svg?style=flat

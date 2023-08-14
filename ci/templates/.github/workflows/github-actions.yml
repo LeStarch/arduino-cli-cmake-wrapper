@@ -10,23 +10,13 @@ jobs:
       matrix:
         include:
         - name: check
-          python: '3.9'
-          toxpython: python3.9
+          python: '3.11'
+          toxpython: python3.11
           tox_env: check
           os: ubuntu-latest
-        - name: lint
-          python: '3.9'
-          toxpython: python3.9
-          tox_env: lint
-          os: ubuntu-latest
-        - name: mypy
-          python: '3.9'
-          toxpython: python3.9
-          tox_env: mypy
-          os: ubuntu-latest
         - name: docs
-          python: '3.9'
-          toxpython: python3.9
+          python: '3.11'
+          toxpython: python3.11
           tox_env: docs
           os: ubuntu-latest
 {% for env in tox_environments %}

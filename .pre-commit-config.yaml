@@ -44,7 +44,7 @@ repos:
     args: [--autofix]
   - id: trailing-whitespace
 - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-  rev: v2.9.0
+  rev: v2.10.0
   hooks:
   - id: pretty-format-ini
     args: [--autofix]
@@ -63,7 +63,7 @@ repos:
   - id: mypy
     additional_dependencies: []
 - repo: https://github.com/PyCQA/docformatter
-  rev: v1.7.1
+  rev: v1.7.5
   hooks:
   - id: docformatter
     additional_dependencies: [tomli]
@@ -80,15 +80,15 @@ repos:
   - id: pydocstyle
     additional_dependencies: [toml]
 - repo: https://github.com/psf/black
-  rev: 23.3.0
+  rev: 23.7.0
   hooks:
   - id: black
     args: [--skip-string-normalization, --line-length=79]
 - repo: https://github.com/asottile/blacken-docs
-  rev: 1.13.0
+  rev: 1.15.0
   hooks:
   - id: blacken-docs
-    additional_dependencies: [black==23.3.0]
+    additional_dependencies: [black==23.7.0]
 - repo: https://github.com/Yelp/detect-secrets
   rev: v1.4.0
   hooks:

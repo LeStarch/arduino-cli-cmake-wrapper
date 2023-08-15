@@ -26,7 +26,7 @@ jobs:
 {% set cpython %}pp{{ prefix[4:5] }}{% endset %}
 {% set toxpython %}pypy{{ prefix[4] }}.{{ prefix[5] }}{% endset %}
 {% else %}
-{% set python %}{{ prefix[2] }}.{{ prefix[3:] }}{% endset %}
+{% set python %}'{{ prefix[2] }}.{{ prefix[3:] }}'{% endset %}
 {% set cpython %}cp{{ prefix[2:] }}{% endset %}
 {% set toxpython %}python{{ prefix[2] }}.{{ prefix[3:] }}{% endset %}
 {% endif %}
@@ -36,7 +36,7 @@ jobs:
     ['macos', 'x64'],
 ] %}
         - name: {{ env }} ({{ os }})
-          python: '{{ python }}'
+          python: {{ python }}
           toxpython: {{ toxpython }}
           python_arch: {{ python_arch }}
           tox_env: {{ env }}{% if 'cover' in env %},codecov{% endif %}

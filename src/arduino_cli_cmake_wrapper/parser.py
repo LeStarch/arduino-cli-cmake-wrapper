@@ -10,6 +10,7 @@ This parsing is three steps:
 
 @author lestarch
 """
+
 import logging
 from shutil import which
 from typing import Dict
@@ -49,17 +50,13 @@ def sectioner(stdout: str) -> List[Tuple[str, List[str]]]:
         list of (announcement, section lines) tuples containing the in-order build section output
     """
     lines = [line.strip() for line in stdout.split('\n')]
-    titles = filter(
-        lambda enumeration: enumeration[1].endswith('...'), enumerate(lines)
-    )
+    titles = filter(lambda enumeration: enumeration[1].endswith('...'), enumerate(lines))
     enumerated_titles = list(enumerate(titles))
     indexed_titles = [
         (title, start, dict(enumerated_titles).get(index + 1, (-1,))[0])
         for index, (start, title) in enumerated_titles
     ]
-    return [
-        (title, lines[start + 1 : end]) for title, start, end in indexed_titles
-    ]
+    return [(title, lines[start + 1 : end]) for title, start, end in indexed_titles]
 
 
 def invocation_filter(lines: List[str]) -> List[str]:
@@ -86,9 +83,7 @@ def invocation_filter(lines: List[str]) -> List[str]:
     ]
 
 
-def annotate(
-    sections: List[Tuple[str, List[str]]]
-) -> List[Tuple[Stage, List[str]]]:
+def annotate(sections: List[Tuple[str, List[str]]]) -> List[Tuple[Stage, List[str]]]:
     """Annotate the stage output with pre-defined stage type.
 
     Annotate the sections with the pre-defined build stage that that
@@ -101,8 +96,7 @@ def annotate(
         ordered and annotated build steps
     """
     return [
-        (ANNOTATION_MAP.get(title, Stage.UNKNOWN), lines)
-        for title, lines in sections
+        (ANNOTATION_MAP.get(title, Stage.UNKNOWN), lines) for title, lines in sections
     ]
 
 
@@ -119,9 +113,7 @@ def parse(stdout: str) -> Dict[Stage, List[str]]:
     Return:
     """
     raw_sections = sectioner(stdout)
-    sections = [
-        (title, invocation_filter(lines)) for title, lines in raw_sections
-    ]
+    sections = [(title, invocation_filter(lines)) for title, lines in raw_sections]
     annotated = annotate(sections)
 
     # Unknown title detection and warnings
@@ -138,7 +130,5 @@ def parse(stdout: str) -> Dict[Stage, List[str]]:
             ','.join(unknown_titles),
         )
     build_stages = dict(annotated)
-    LOGGER.debug(
-        'Detected build stages:\n\t%s', string_dictionary_of_list(build_stages)
-    )
+    LOGGER.debug('Detected build stages:\n\t%s', string_dictionary_of_list(build_stages))
     return build_stages

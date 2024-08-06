@@ -7,6 +7,7 @@ running, and capturing output from that build.
 
 @author lestarch
 """
+
 import logging
 import subprocess
 from pathlib import Path
@@ -40,8 +41,7 @@ def make_sketch(directory: Path, libraries: List[str]) -> Dict[Source, Path]:
     """
     libraries = libraries if libraries else []
     mappings = {
-        source: directory / f'{directory.name}.{ source.value }'
-        for source in Source
+        source: directory / f'{directory.name}.{ source.value }' for source in Source
     }
     # Create an empty source of each type
     for _, path in mappings.items():
@@ -50,9 +50,7 @@ def make_sketch(directory: Path, libraries: List[str]) -> Dict[Source, Path]:
     assert ino_file is not None
     # Create main sketch as an ino file such that it is a valid sketch
     with Path.open(ino_file, 'w') as file_handle:
-        include_set = '\n'.join(
-            f'#include <{library}.h>' for library in libraries
-        )
+        include_set = '\n'.join(f'#include <{library}.h>' for library in libraries)
         file_handle.write(include_set + '\nvoid setup() {}\nvoid loop() {}')
     return mappings
 
@@ -89,9 +87,7 @@ def compile_sketch(
     ]
     LOGGER.debug('Invoking: %s', ' '.join(arguments))
 
-    process = subprocess.run(
-        arguments, text=True, capture_output=True  # noqa: S603
-    )
+    process = subprocess.run(arguments, text=True, capture_output=True)
     if process.returncode != 0:
         raise FauxBuildException(
             f'arduino-cli failed with return code: {process.returncode}',

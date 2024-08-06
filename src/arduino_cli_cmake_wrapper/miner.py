@@ -2,6 +2,7 @@
 
 Handles the data mining operations on the output of the build stages.
 """
+
 import logging
 from functools import partial
 from pathlib import Path
@@ -106,9 +107,7 @@ def filter_by_filenames(
 
 def build_tokens(
     stages: Dict[Stage, List[str]], sources: Dict[Source, Path]
-) -> Tuple[
-    Dict[Source, str], Dict[Source, List[str]], Dict[Source, List[str]]
-]:
+) -> Tuple[Dict[Source, str], Dict[Source, List[str]], Dict[Source, List[str]]]:
     """Detect command line build tokens for each source type.
 
     Looks at the source build invocation for each file in the source
@@ -139,9 +138,7 @@ def build_tokens(
     class Cleaner(FilterProtocol):
         """Clean out -c -o <arg> and filename arguments."""
 
-        def __call__(
-            self, tokens: List[str], negate: bool = False
-        ) -> List[str]:
+        def __call__(self, tokens: List[str], negate: bool = False) -> List[str]:
             """Clean out -c -o <arg> and filename arguments."""
             return filter_by_filenames(
                 list(real_names.values()),
@@ -149,16 +146,13 @@ def build_tokens(
             )
 
     cleaner = Cleaner()
-    sorter = partial(filter_by_flags, {'-I': lambda item: item == '-I'})
+    sorter = partial(filter_by_flags, {'-I': lambda item: item == '-I'})  # type: ignore[dict-item]
 
     sorted_source_lines = {
-        source: sort_line(line, cleaner, sorter)
-        for source, line in source_lines.items()
+        source: sort_line(line, cleaner, sorter) for source, line in source_lines.items()
     }
     tools = {source: sorted_source_lines[source][0] for source in Source}
-    non_include_paths = {
-        source: sorted_source_lines[source][1] for source in Source
-    }
+    non_include_paths = {source: sorted_source_lines[source][1] for source in Source}
     include_paths = {
         source: [
             path.replace('-I', '')
@@ -171,12 +165,8 @@ def build_tokens(
         'Detected compilers:\n\t%s',
         '\n\t'.join([f'{source}: {value}' for source, value in tools.items()]),
     )
-    LOGGER.debug(
-        'Detected include paths:%s', string_dictionary_of_list(include_paths)
-    )
-    LOGGER.debug(
-        'Detected build flags:%s', string_dictionary_of_list(non_include_paths)
-    )
+    LOGGER.debug('Detected include paths:%s', string_dictionary_of_list(include_paths))
+    LOGGER.debug('Detected build flags:%s', string_dictionary_of_list(non_include_paths))
 
     return tools, include_paths, non_include_paths
 
@@ -198,9 +188,7 @@ def sketch_cache(stages: Dict[Stage, List[str]]) -> Path:
         raise MissingStageException(Stage.CORE)
 
     core_tokens = [
-        token
-        for token in safe_split(core_lines[-1])
-        if token.endswith('core.a')
+        token for token in safe_split(core_lines[-1]) if token.endswith('core.a')
     ]
     assert core_tokens, 'Could not find core.a'
     core_archive = core_tokens[0]
@@ -277,9 +265,7 @@ def sort_line(
     return (tokens[0], sort(tokens[1:]), sort(tokens[1:], negate=True))
 
 
-def identify_link_line(
-    stages: Dict[Stage, List[str]], source_objects: List[str]
-) -> str:
+def identify_link_line(stages: Dict[Stage, List[str]], source_objects: List[str]) -> str:
     """Identify the linking line based on source object names.
 
     This function identifies the linking line within the context of the
@@ -299,9 +285,7 @@ def identify_link_line(
         identify_line: A general function to identify lines based on
             stages and criteria.
     """
-    link_line = identify_line(
-        Stage.LINK, stages, partial(match_all, source_objects)
-    )
+    link_line = identify_line(Stage.LINK, stages, partial(match_all, source_objects))
     LOGGER.debug('Linking line: %s', link_line)
     return link_line
 
@@ -354,17 +338,13 @@ def link_tokens(
             identified linker, a list of link flags, a list of link objects,
             and a list of link libraries.
     """
-    object_names = [
-        f'{name}.o' for name in real_source_names(sources).values()
-    ]
+    object_names = [f'{name}.o' for name in real_source_names(sources).values()]
     link_line = identify_link_line(stages, object_names)
 
     class Cleaner(FilterProtocol):
         """Filter to clean out -c -o <arg> and filename arguments."""
 
-        def __call__(
-            self, tokens: List[str], negate: bool = False
-        ) -> List[str]:
+        def __call__(self, tokens: List[str], negate: bool = False) -> List[str]:
             """Filter to clean out -c -o <arg> and filename arguments."""
             return filter_by_filenames(
                 object_names, filter_by_flags({'-o': True}, tokens)
@@ -448,9 +428,7 @@ def post_link_lines(
         identify_link_line: A function to identify the linking line based
             on source object names.
     """
-    object_names = [
-        f'{name}.o' for name in real_source_names(sources).values()
-    ]
+    object_names = [f'{name}.o' for name in real_source_names(sources).values()]
     link_line = identify_link_line(stages, object_names)
     stage_lines = stages.get(Stage.LINK, [])
     post_links = stage_lines[stage_lines.index(link_line) + 1 :]

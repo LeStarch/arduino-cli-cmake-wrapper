@@ -7,3 +7,5 @@ arduino_cli_cmake_wrapper
 
 .. automodule:: arduino_cli_cmake_wrapper
     :members:
+    :undoc-members:
+    :special-members: __init__, __len__

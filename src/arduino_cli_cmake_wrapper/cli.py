@@ -5,6 +5,7 @@ commands, and built archive from a build of a test INO file in Arduino.
 This allows the program to know how arduino should compile C and C++
 files.
 """
+
 import argparse
 import json
 import logging
@@ -196,9 +197,7 @@ def remap_output(
         'Source.S': 'ASM',
         'Source.INO': 'INO',
         str(cache_path): str(output_directory),
-        str(
-            output_directory / f'{test_files[Source.INO].name}.elf'
-        ): '<TARGET_PATH>',
+        str(output_directory / f'{test_files[Source.INO].name}.elf'): '<TARGET_PATH>',
         str(output_directory / test_files[Source.INO].name): '<TARGET_PATH>',
         str(test_files[Source.INO].name): '<TARGET_NAME>',
     }
@@ -238,9 +237,7 @@ def assemble_output_data(
         assembled data.
     """
     compilers, includes, build_flags = build_tokens(stages, test_files)
-    linker, link_flags, link_objects, link_libraries = link_tokens(
-        stages, test_files
-    )
+    linker, link_flags, link_objects, link_libraries = link_tokens(stages, test_files)
     archiver, archive_flags = archive_tokens(stages)
     post_link_steps = post_link_lines(stages, test_files)
 
@@ -266,9 +263,9 @@ def main(arguments: Optional[List[str]] = None):
     try:
         args = parse_arguments(arguments)
         output_directory = Path(args.output)
-        logging.basicConfig(
-            level=logging.DEBUG
-        ) if args.debug else logging.basicConfig(level=logging.INFO)
+        logging.basicConfig(level=logging.DEBUG) if args.debug else logging.basicConfig(
+            level=logging.INFO
+        )
 
         # Run the build
         test_file_map, stdout, stderr = build(args.board, args.libraries, [])
@@ -292,11 +289,9 @@ def main(arguments: Optional[List[str]] = None):
         output_data['arguments'] = sys.argv[1:]
 
         # Output the data as JSON
-        with (
-            Path.open(args.json_file, 'w')
-            if args.json_file is not None
-            else sys.stdout
-        ) as file_handle:
+        with Path.open(
+            args.json_file, 'w'
+        ) if args.json_file is not None else sys.stdout as file_handle:
             json.dump(output_data, file_handle, indent=4)
 
         # Outputs the sketch cache for ingestion into larger build

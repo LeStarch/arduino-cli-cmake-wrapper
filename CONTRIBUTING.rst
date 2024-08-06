@@ -73,7 +73,6 @@ For merging, you should:
 3. Add yourself to ``AUTHORS.rst``.
 4. Fill out the PR template.
 
-
 Tips
 ----
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 """Setup script to install the ``arduino-cli-cmake-wrapper`` package."""
 
 import re
@@ -18,7 +18,11 @@ def read(*names, **kwargs):
 
 setup(
     name='arduino-cli-cmake-wrapper',
-    version='0.0.0',
+    use_scm_version={
+        'local_scheme': 'dirty-tag',
+        'write_to': 'src/arduino_cli_cmake_wrapper/_version.py',
+        'fallback_version': '0.0.0',
+    },
     license='Apache-2.0',
     description='Arduino Cmake toolchain leveraging ``arduino-cli`` via python wrapper script',
     long_description='{}\n{}'.format(
@@ -28,7 +32,7 @@ setup(
         re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGELOG.rst')),
     ),
     author='Sterling Lewis Peet',
-    author_email='sterling.peet@ae.gatech.edu',
+    author_email='sterling.peet@gatech.edu',
     url='https://github.com/SterlingPeet/arduino-cli-cmake-wrapper',
     packages=find_packages('src'),
     package_dir={'': 'src'},
@@ -50,6 +54,7 @@ setup(
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
         'Topic :: Utilities',
@@ -68,9 +73,12 @@ setup(
     ],
     extras_require={
         # eg:
-        #   'rst': ['docutils>=0.11'],
-        #   ':python_version=="2.6"': ['argparse'],
+        #   "rst": ["docutils>=0.11"],
+        #   ":python_version=='3.8'": ["backports.zoneinfo"],
     },
+    setup_requires=[
+        'setuptools_scm>=3.3.1',
+    ],
     entry_points={
         'console_scripts': [
             'arduino-cli-wrapper = arduino_cli_cmake_wrapper.cli:main',

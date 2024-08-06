@@ -77,9 +77,7 @@ class MissingStageException(ArduinoCLIException):
 
     def __init__(self, stage: Stage):
         """Missing build stage."""
-        super().__init__(
-            f'Failed to find any output for build stage: {stage.value}'
-        )
+        super().__init__(f'Failed to find any output for build stage: {stage.value}')
 
 
 class MultipleInvocationException(ArduinoCLIException):

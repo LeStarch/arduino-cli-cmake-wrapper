@@ -24,4 +24,5 @@ for an Arduino target using Arduino libraries, you need a shim like
 this to avoid hard dependence on the exact version or Arduino, Arduino
 Core, and the specific versions of installed libraries.
 """
+
 __version__ = '0.0.0'

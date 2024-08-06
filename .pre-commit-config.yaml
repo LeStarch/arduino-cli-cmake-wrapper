@@ -1,10 +1,9 @@
-# To install the git pre-commit hook run:
-#   pre-commit install
-# To update the pre-commit hooks run:
-#
-exclude: ^(\.tox|ci|\.bumpversion\.cfg)(/|$)
-default_install_hook_types: [pre-commit, pre-merge-commit, pre-push, commit-msg]
-default_stages: [pre-commit, pre-merge-commit, pre-push]
+# To install the git pre-commit hooks run:
+#   pre-commit install --install-hooks
+# To update the versions:
+#   pre-commit autoupdate
+exclude: ^(\.tox|ci/templates|\.bumpversion\.cfg)(/|$)
+# Note the order is intentional to avoid multiple passes of the hooks
 repos:
 - repo: https://github.com/SterlingPeet/git-precommit-hooks
   rev: v1.0.0
@@ -17,8 +16,14 @@ repos:
   hooks:
   - id: gitlint
     stages: [commit-msg]
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.5.6
+  hooks:
+  - id: ruff
+    args: [--fix, --exit-non-zero-on-fix, --show-fixes]
+  - id: ruff-format
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v4.4.0
+  rev: v4.6.0
   hooks:
   - id: check-added-large-files
   - id: check-ast
@@ -44,7 +49,7 @@ repos:
     args: [--autofix]
   - id: trailing-whitespace
 - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-  rev: v2.10.0
+  rev: v2.14.0
   hooks:
   - id: pretty-format-ini
     args: [--autofix]
@@ -52,16 +57,11 @@ repos:
     args: [--autofix]
   - id: pretty-format-yaml
     args: [--autofix, --indent, '2']
-- repo: https://github.com/charliermarsh/ruff-pre-commit
-  rev: v0.0.284
-  hooks:
-  - id: ruff
-    args: [--fix]
 - repo: https://github.com/pre-commit/mirrors-mypy
-  rev: v1.5.0
+  rev: v1.11.1
   hooks:
   - id: mypy
-    additional_dependencies: []
+    additional_dependencies: [types-setuptools]
 - repo: https://github.com/PyCQA/docformatter
   rev: v1.7.5
   hooks:
@@ -69,7 +69,7 @@ repos:
     additional_dependencies: [tomli]
     args: [--in-place, --config, ./pyproject.toml]
 - repo: https://github.com/myint/rstcheck
-  rev: v6.1.2
+  rev: v6.2.4
   hooks:
   - id: rstcheck
     args: [--report-level=warning, '--ignore-directives=automodule,testsetup']
@@ -78,19 +78,10 @@ repos:
   rev: 6.3.0
   hooks:
   - id: pydocstyle
+    exclude: ^ci/
     additional_dependencies: [toml]
-- repo: https://github.com/psf/black
-  rev: 23.7.0
-  hooks:
-  - id: black
-    args: [--skip-string-normalization, --line-length=79]
-- repo: https://github.com/asottile/blacken-docs
-  rev: 1.15.0
-  hooks:
-  - id: blacken-docs
-    additional_dependencies: [black==23.7.0]
 - repo: https://github.com/Yelp/detect-secrets
-  rev: v1.4.0
+  rev: v1.5.0
   hooks:
   - id: detect-secrets
           # args: [--baseline, ci/secrets.baseline]

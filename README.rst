@@ -8,7 +8,7 @@
     :stub-columns: 1
 
     * - 🔨 Code
-      - | |black| |isort| |ruff| |contributors| |commit| |license| |semver|
+      - | |isort| |ruff| |contributors| |commit| |license| |semver|
     * - 📝 Docs
       - | |gitmoji| |docs| |docformatter| |mypy| |docstyle| |gitchangelog|
     * - 🧪 Tests
@@ -17,10 +17,6 @@
       - | |version| |wheel| |supported-versions| |supported-implementations|
         | |commits-since|
 
-
-.. |black| image:: https://img.shields.io/badge/%20style-black-000000.svg
-    :target: https://github.com/psf/black
-    :alt: The Uncompromising Code Formatter
 
 .. |isort| image:: https://img.shields.io/badge/%20imports-isort-%231674b1
     :target: https://pycqa.github.io/isort/

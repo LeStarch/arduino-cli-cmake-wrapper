@@ -107,6 +107,7 @@ def parse_arguments(arguments: Optional[List[str]]) -> argparse.Namespace:
         nargs='*',
         help='List of build properties to supply',
         required=False,
+        default=[],
     )
     parser.add_argument(
         '-p',
@@ -267,8 +268,13 @@ def main(arguments: Optional[List[str]] = None):
             level=logging.INFO
         )
 
+        properties = []
+        for prop in args.properties:
+            properties.append('--build-property')
+            properties.append(prop)
+
         # Run the build
-        test_file_map, stdout, stderr = build(args.board, args.libraries, [])
+        test_file_map, stdout, stderr = build(args.board, args.libraries, properties)
 
         # Parse the output into stages
         stages = parse(stdout)

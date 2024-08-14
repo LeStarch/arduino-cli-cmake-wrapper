@@ -61,5 +61,6 @@ jobs:
     - name: test
       env:
         TOXPYTHON: {{ '${{ matrix.toxpython }}' }}
+        SKIP: check-git-hooks-installed
       run: >
         tox -e {{ '${{ matrix.tox_env }}' }} -v

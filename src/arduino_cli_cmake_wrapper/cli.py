@@ -103,6 +103,14 @@ def parse_arguments(arguments: List[str]) -> argparse.Namespace:
         default=[],
     )
     parser.add_argument(
+        "--board-options",
+        type=str,
+        nargs="*",
+        help="List of board options to supply",
+        required=False,
+        default=[],
+    )
+    parser.add_argument(
         "-p",
         "--post-link",
         action="store_true",
@@ -232,13 +240,16 @@ def main(arguments: List[str] = None):
         output_directory = Path(arguments.output)
         logging.basicConfig(level=logging.DEBUG) if arguments.debug else logging.basicConfig(level=logging.INFO)
 
-        properties = []
+        pass_args = []
         for property in arguments.properties:
-            properties.append("--build-property")
-            properties.append(property)
+            pass_args.append("--build-property")
+            pass_args.append(property)
+        for board_option in arguments.board_options:
+            pass_args.append("--board-options")
+            pass_args.append(board_option)
 
         # Run the build
-        test_file_map, stdout, stderr = build(arguments.board, arguments.libraries, properties)
+        test_file_map, stdout, stderr = build(arguments.board, arguments.libraries, pass_args)
 
         # Parse the output into stages
         stages = parse(stdout)
